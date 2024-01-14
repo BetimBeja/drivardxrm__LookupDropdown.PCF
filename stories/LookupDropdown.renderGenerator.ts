@@ -1,6 +1,7 @@
 import type { IInputs, IOutputs } from "../LookupDropdown/generated/ManifestTypes";
 
 import {
+  AttributeType,
   ComponentFrameworkMockGenerator,
   EnumPropertyMock,
   LookupPropertyMock,
@@ -27,10 +28,10 @@ export const renderGenerator = () => {
 
   return function () {
     const [args, updateArgs] = useArgs<StoryArgs>();
-    useEffect(()=>()=>{
+    useEffect(() => () => {
       container = null;
       mockGenerator.control.destroy();
-    },[]);
+    }, []);
     if (!container) {
       container = document.createElement("div");
       mockGenerator = new ComponentFrameworkMockGenerator(
@@ -50,13 +51,89 @@ export const renderGenerator = () => {
         {
           LogicalName: "contact",
           SchemaName: "Contact",
+          EntitySetName: "contacts",
           PrimaryIdAttribute: "contactid",
           PrimaryNameAttribute: "fullname",
           PrimaryImageAttribute: "entityimage",
           ManyToOneRelationships: [],
           OneToManyRelationships: [],
+          Attributes: [
+            {
+              AttributeType: AttributeType.Uniqueidentifier,
+              SchemaName: "ContactId",
+              LogicalName: "contactid"
+            } as ShkoOnline.AttributeMetadata,
+            {
+              AttributeType: AttributeType.String,
+              SchemaName: "FullName",
+              LogicalName: "fullname"
+            } as ShkoOnline.StringAttributeMetadata,
+            {
+              AttributeType: AttributeType.String,
+              SchemaName: "EntityImage",
+              LogicalName: "entityimage"
+            } as ShkoOnline.AttributeMetadata,
+            {
+              AttributeType: AttributeType.String,
+              SchemaName: "Country",
+              LogicalName: "country"
+            } as ShkoOnline.StringAttributeMetadata,
+          ]
         } as ShkoOnline.EntityMetadata,
+        {
+          LogicalName: 'savedquery',
+          SchemaName: 'SavedQuery',
+          EntitySetName: 'savedqueries',
+          Attributes: [
+            {
+              AttributeType: AttributeType.String,
+              SchemaName: "ReturnedTypeCode",
+              LogicalName: "returnedtypecode"
+            } as ShkoOnline.StringAttributeMetadata,
+            {
+              AttributeType: AttributeType.String,
+              SchemaName: "FetchXML",
+              LogicalName: "fetchxml"
+            } as ShkoOnline.StringAttributeMetadata,
+          ]
+        } as ShkoOnline.EntityMetadata
       ]);
+
+      mockGenerator.metadata.initItems({
+        "@odata.context": '#contacts',
+        value: [
+          {
+            contactid: "1",
+            fullname: "Betim Beja",
+            country: "Albania",
+            entityimage: ImgBetim,
+          },
+          {
+            contactid: "2",
+            fullname: "David Rivard",
+            country: "Canada",
+            entityimage: ImgDavid,
+          },
+        ]
+      });
+
+      mockGenerator.metadata.initItems({
+        "@odata.context": '#savedqueries',
+        value: [
+          {
+            savedqueriesid: "1",
+            returnedtypecode: "contact",
+            fetchxml: `<fetch>
+            <entity name="contact">
+            <attribute name="contactid" />
+            <attribute name="fullname" />
+            <attribute name="entityimage" />
+            <attribute name="country" />
+            </entity>
+          </fetch>`
+          },
+        ]
+      });
 
       mockGenerator.context._parameters.lookupfield.security = {
         editable: true,
@@ -64,52 +141,8 @@ export const renderGenerator = () => {
         secured: false,
       };
 
-      mockGenerator.context.webAPI.retrieveRecord.callsFake(
-        (entityType: string, id: string, options?: string) => {
-          if (entityType === "savedquery") {
-            return new Promise((resolve) =>
-              setTimeout(
-                () =>
-                  resolve({
-                    returnedtypecode: "contact",
-                    fetchxml: `<fetch>
-                        <entity>
-                        </entity>
-                      </fetch>`,
-                    // eslint-disable-next-line no-undef
-                  } as ComponentFramework.WebApi.Entity),
-                100
-              )
-            );
-          }
-          return new Promise((_resolve, reject) => {
-            setTimeout(() => reject(new Error("invalid")), 100);
-          });
-        }
-      );
-
-      mockGenerator.context.webAPI.retrieveMultipleRecords.callsFake(
-        (entityType: string, options?: string, maxPageSize?: number) => {
-          return new Promise((resolve) => {
-            resolve({
-              entities: [
-                {
-                  contactid: "1",
-                  fullname: "Betim Beja",
-                  country: "Albania",
-                  entityimage: ImgBetim,
-                },
-                {
-                  contactid: "2",
-                  fullname: "David Rivard",
-                  country: "Canada",
-                  entityimage: ImgDavid,
-                },
-              ],
-              nextLink: "",
-            });
-          });
-        }
+      mockGenerator.context._parameters.lookupfield.getViewId.returns(
+        mockGenerator.metadata.GetAllRows('savedquery').rows[0]['savedqueryid']
       );
 
       mockGenerator.onOutputChanged.callsFake(() => {
