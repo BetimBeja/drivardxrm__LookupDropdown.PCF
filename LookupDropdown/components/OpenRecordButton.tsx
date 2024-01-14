@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 /* eslint-disable no-use-before-define */
 import { IconButton } from '@fluentui/react/lib/Button'
 import { IIconProps } from '@fluentui/react/lib/Icon'

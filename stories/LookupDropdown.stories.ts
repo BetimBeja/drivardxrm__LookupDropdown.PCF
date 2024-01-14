@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/html";
 import { StoryArgs, renderGenerator } from "./LookupDropdown.renderGenerator";
 
-
-
 export default {
-  title: "PCF Component/LookupDropdown",
+  title: "Lookup Dropdown",
   decorators: [
     (Story) => {
       const container = document.createElement("div");
@@ -26,6 +24,7 @@ export default {
   parameters: {
     // More on Story layout: https://storybook.js.org/docs/html/configure/story-layout
     layout: "fullscreen",
+    controls: { expanded: true }
   },
   // More on argTypes: https://storybook.js.org/docs/html/api/argtypes
   argTypes: {
@@ -48,18 +47,30 @@ export default {
     customselecttext: {
       name: "Custom Select Text",
       control: "text",
+      table: {
+        category: "Parameters",
+      },
     },
     customtext: {
       name: "Custom Text",
       control: "text",
+      table: {
+        category: "Parameters",
+      },
     },
     showOpenRecordButton: {
       name: "Show Open Record",
       control: "boolean",
+      table: {
+        category: "Parameters",
+      },
     },
     showRecordImage: {
       name: "Show Record Image",
       control: "boolean",
+      table: {
+        category: "Parameters",
+      },
     },
   },
   args: {
@@ -76,7 +87,6 @@ export const Primary = {
     showOpenRecordButton: true,
     showRecordImage: true,
   },
-  parameters: { controls: { expanded: true } },
 } as StoryObj<StoryArgs>;
 
 export const CustomText = {

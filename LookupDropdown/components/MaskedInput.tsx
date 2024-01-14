@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 /* eslint-disable no-undef */
 // eslint-disable-next-line no-use-before-define
 import { mergeStyles } from '@fluentui/react/lib/Styling'

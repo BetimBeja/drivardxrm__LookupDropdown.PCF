@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 /* eslint-disable no-use-before-define */
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { PcfContextProvider } from '../services/PcfContext'

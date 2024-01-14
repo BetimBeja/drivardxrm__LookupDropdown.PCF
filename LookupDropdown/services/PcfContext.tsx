@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 /* eslint-disable no-use-before-define */
 import { createContext, ReactNode, useContext } from 'react'
 import { PcfContextService } from './PcfContextService'
