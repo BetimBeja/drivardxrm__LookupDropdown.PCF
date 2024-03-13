@@ -35,6 +35,8 @@
     "@storybook/blocks": "^8.0.0",
     "@storybook/html": "^8.0.0",
     "@storybook/html-webpack5": "^8.0.0",
+    "@storybook/manager-api": "^8.0.0",
+    "@storybook/theming": "^8.0.0",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^4.20.0",
